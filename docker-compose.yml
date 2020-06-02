@@ -1,0 +1,30 @@
+version: '3'
+volumes:
+  postgres:
+services:
+  db:
+    image: postgres:9.6
+    environment: 
+      - POSTGRES_PASSWORD=123
+    volumes:
+      - postgres:/var/lib/postgresql/data
+      - ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - postgres
+  app:
+    image: node:14.3
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./app:/app
+    working_dir: /app
+    entrypoint: bash ./app.sh
+    depends_on:
+      - db
+    networks:
+      - postgres
+    ports:
+      - 80:45678
+      - 9229:9229
+networks:
+  postgres:
