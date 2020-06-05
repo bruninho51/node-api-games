@@ -23,8 +23,20 @@ services:
       - db
     networks:
       - postgres
+      - app
     ports:
-      - 80:45678
       - 9229:9229
+  client: 
+    image: nginx:1.19
+    volumes:
+      - ./app/public:/usr/share/nginx/html
+      - ./app/public/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+    networks:
+      - app
+    ports:
+      - 80:80
 networks:
   postgres:
+  app:

@@ -3,9 +3,11 @@ const express = require('express');
 app = express();
 
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(cors());
 
 db = require('./models/index');
 
